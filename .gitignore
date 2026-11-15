@@ -1,0 +1,10 @@
+# Deine Daten bleiben nur auf dem Laptop - nie hochladen!
+accounts/
+panel.env
+*.env
+node_modules/
+package-lock.json
+*.log
+*.tmp
+server.js.vor-*
+texture-cache/
