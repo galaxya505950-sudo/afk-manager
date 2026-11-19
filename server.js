@@ -969,13 +969,6 @@ function istEigenerBotName(n) {
   });
 }
 
-function istBekannterSpieler(accName, spieler) {
-  const players = bots.get(accName)?.bot?.players;
-  if (!players) return false;
-  const klein = String(spieler).toLowerCase();
-  return Object.keys(players).some(p => p.toLowerCase() === klein);
-}
-
 function istServerAnsage(name, text) {
   if (!HIDE_SERVER_ADS) return false;
   const t = String(text || '').trim();
@@ -983,10 +976,8 @@ function istServerAnsage(name, text) {
   // "Hey <eigener Bot>, ..." -> immer weg. Vorne koennen Symbole aus dem
   // Server-Texturpaket, Leerzeichen oder unsichtbare Zeichen stehen -> ignorieren.
   const kern = t.replace(/^[^\p{L}\p{N}]+/u, '');
-  // Gilt fuer eigene Bots UND jeden Spielernamen, den der Bot online sieht
-  // (z.B. wenn der Server einen anderen Anzeigenamen benutzt).
-  const m = /^hey\s+([A-Za-z0-9_]{2,16})\s*[,!.:]/i.exec(kern);
-  if (m && (istEigenerBotName(m[1]) || istBekannterSpieler(name, m[1]))) return true;
+  const m = /^hey\s+([A-Za-z0-9_]{2,16})\s*[,!]/i.exec(kern);
+  if (m && istEigenerBotName(m[1])) return true;
 
   // Gleiche Nachricht mit anderem Bot-Namen schon gesehen -> nur einmal zeigen
   const key = chatDedupeKey(t);
