@@ -28,6 +28,11 @@ if [ -d "$ZIEL/.git" ]; then
   echo "Ordner gibt es schon - hole nur das neueste Update."
   git -C "$ZIEL" pull --ff-only
 else
+  if [ -e "$ZIEL" ]; then
+    ALT="$ZIEL-alt-$(date +%Y%m%d-%H%M%S)"
+    echo "Ordner $ZIEL gibt es schon (ohne Updates) - wird umbenannt in $ALT"
+    mv "$ZIEL" "$ALT"
+  fi
   git clone "$REPO_URL" "$ZIEL"
 fi
 cd "$ZIEL"
